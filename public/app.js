@@ -1,10 +1,38 @@
+// const { Socket } = require("socket.io")
+
 const canvas = document.querySelector('canvas')
+const input = document.querySelector('#input')
+const submit = document.querySelector('#submit')
 const c = canvas.getContext('2d')
+const socket=io()
 canvas.width = window.innerWidth
 canvas.height = window.innerHeight
-
+var X;
+var Y;
 var projectile
+const p=[];
+socket.on('updateplayers',(players)=>{
+    players.map((item)=>{
+        if(socket.id==item.id){
+            X=item.x;
+            Y=item.y;
+            console.log(X,Y)
+        }
+       const ps= new Player(item.x , item.y, 10, item.color);
+    p.push(ps);
 
+    }) 
+    
+})
+socket.on('message',(players)=>{
+    console.log(players)
+})
+
+
+
+submit.addEventListener("click",()=>{
+    socket.emit("create_room",input.value);
+})
 class Player {
     constructor(x, y, radius, color) {
         this.x = x
@@ -39,7 +67,7 @@ class Projectile {
         this.draw()
         this.x += this.velocity.x
         this.y += this.velocity.y
-        // console.log('yes')
+    
 
     }
 
@@ -114,18 +142,17 @@ class Particles {
 const projectiles = []
 const enemies = []
 const particles = []
-const player = new Player(canvas.width / 2, canvas.height / 2, 10, 'white')
-player.draw()
+
 
 window.addEventListener('click', (e) => {
-    const angle = Math.atan2(e.clientY - canvas.height / 2, e.clientX - canvas.width / 2)
+    const angle = Math.atan2(e.clientY - Y, e.clientX -X)
     const velocity = {
-        x: Math.cos(angle)*5 ,
-        y: Math.sin(angle)*5
+        x: Math.cos(angle)*8,
+        y: Math.sin(angle)*8
     }
     const audio = new Audio("./audio/gun_shot.mp3")
     audio.play()
-    projectiles.push(new Projectile(canvas.width / 2, canvas.height / 2, 2, velocity, 'white'))
+    projectiles.push(new Projectile(X,Y, 2, velocity, 'white'));
 })
 function enemyadd() {
 interval=3000
@@ -157,8 +184,10 @@ function animate() {
     animationId = requestAnimationFrame(animate)
     c.fillStyle = 'rgba(0,0,0,0.1)'
     c.fillRect(0, 0, canvas.width, canvas.height)
-
-    player.draw()
+p.forEach((item)=>{
+    item.draw();
+})
+   
     particles.forEach((particle,index) => {
        if(particle.alpha<0){
         particles.splice(index,1)
@@ -178,13 +207,21 @@ function animate() {
     })
 
     enemies.forEach((enemy, index) => {
-
-        const d = Math.hypot(player.x - enemy.x, enemy.y - player.y)
-        if (d - player.radius - enemy.radius < 0) {
-            const audio = new Audio("./audio/game_over.wav")
-            audio.play()
-            cancelAnimationFrame(animationId)
-        }
+p.forEach((player)=>{
+    const d = Math.hypot(player.x - enemy.x, enemy.y - player.y)
+    if (d - player.radius - enemy.radius < 0) {
+    socket.emit("message",{
+        messages:"my game is over",
+        name:socket.id
+    })
+    console.log(socket)
+    
+        const audio = new Audio("./audio/game_over.wav")
+        audio.play()
+        cancelAnimationFrame(animationId)
+    }
+})
+       
         projectiles.forEach((projectile, pindex) => {
             const d = Math.hypot(enemy.x - projectile.x, enemy.y - projectile.y)
             if (d - enemy.radius - projectile.radius < 1) {
