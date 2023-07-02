@@ -42,7 +42,8 @@ io.on("connection", (socket) => {
 
 
 app.get('/',(req,res)=>{
-    res.sendFile(__dirname+'/index.html');
+  res.send("hi this ")
+    // res.sendFile(__dirname+'/index.html');
 })
 server.listen(3000,()=>{
 console.log("port is running on 3000")
