@@ -48,6 +48,6 @@ app.get('/',(req,res)=>{
   res.send("hi this ")
     // res.sendFile(__dirname+'/index.html');
 })
-server.listen(3000,()=>{
+app.listen(3000,()=>{
 console.log("port is running on 3000")
 })
