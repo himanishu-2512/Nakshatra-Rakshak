@@ -8,12 +8,40 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-   
-    <canvas>
+    <div>
+        <div class="start-screen">
+    <div class="startscreen">
+        <button id="startbutton"> Start</button>
+    </div>
 
-    </canvas>
+        </div>
+       <div>
+        <p class="lives">
+            <ion-icon name="heart"></ion-icon>
+            <ion-icon name="heart"></ion-icon>
+            <ion-icon name="heart"></ion-icon>
+        </p>
+       <p class="score">Score:<span id="scoreId">0</span></p>
+        <canvas>
+    
+        </canvas></div>
+        <div class="end-screen">
+            <div class="endscreen">
+                <button id="endbutton">Restart</button>
+            </div>
+                </div>
+    </div>
+    <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"
+    integrity="sha512-6+YN/9o9BWrk6wSfGxQGpt3EUK6XeHi6yeHV+TYD2GR0Sj/cggRpXr1BrAQf0as6XslxomMUxXp2vIl+fv0QRA=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js" integrity="sha512-f8mwTB+Bs8a5c46DEm7HQLcJuHMBaH/UFlcgyetMqqkvTcYg4g5VXsYR71b3qC82lZytjNYvBj2pf0VekA9/FQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
+    <!-- <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script> -->
     <script src="./app2.js"></script>
+    <script src="./audio.js"></script>
 </body>
 </html>

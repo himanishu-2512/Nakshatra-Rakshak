@@ -1,8 +1,65 @@
 *{
     margin: 0;
     padding: 0;
+
+    background-color: black;
+
 }
 canvas{
     display:block;
+    top:0;
 }
+.score{
+    position: fixed;
+    margin:2px;
+    padding :10px;
+    z-index:2;
+    color:white;
 
+}
+.lives{
+    position: fixed;
+    margin:2px;
+    padding :10px;
+    z-index:2;
+    display:flex;
+    right:10px; 
+}
+.lives ion-icon{
+    color:red;
+    font-size:x-large;
+}
+.start-screen{
+   width:100vw;
+   height: 100vh; 
+    position:fixed;
+
+display: flex;
+justify-content: center;
+align-items: center;
+}
+.startscreen{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width:600px;
+    height:400px;
+    background-color: black;
+    border: solid 2px rgb(50, 95, 135);
+
+}
+#startbutton{
+
+    width:120px;
+    height:auto;
+    text-align: center;
+    padding:20px;
+    border:solid 4px rgb(61, 105, 144);
+    border-radius: 20px;
+    background-color: black;
+    color: white;
+
+}
+#startbutton:active{
+    color:red;
+}
