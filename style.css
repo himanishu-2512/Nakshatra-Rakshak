@@ -29,15 +29,16 @@ canvas{
     color:red;
     font-size:x-large;
 }
-.start-screen,.end-screen{
+.start-screen{
    width:100vw;
    height: 100vh; 
     position:fixed;
+
 display: flex;
 justify-content: center;
 align-items: center;
 }
-.startscreen,.endscreen{
+.startscreen{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -47,7 +48,7 @@ align-items: center;
     border: solid 2px rgb(50, 95, 135);
 
 }
-#startbutton,#endbutton{
+#startbutton{
 
     width:120px;
     height:auto;
@@ -59,13 +60,6 @@ align-items: center;
     color: white;
 
 }
-#startbutton:active,#endbutton:active{
+#startbutton:active{
     color:red;
-}
-.end-screen{
-    color:white;
-    top:0;
-    display: none;
-
-    
 }

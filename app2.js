@@ -1,16 +1,13 @@
-
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
-let restartbutton=document.getElementById("restartbutton")
+// const socket = io()
 canvas.width = window.innerWidth
 canvas.height = window.innerHeight
 let scoreId=document.getElementById('scoreId')
 let startbtn=document.getElementById("startbutton")
 let startscreen=document.querySelector(".start-screen")
-let highscore=document.getElementById("highscore")
 let score=0
 let lifeline=document.querySelector('.lives')
-let restartscreen=document.querySelector(".end-screen")
 function createPartilces({ object, color, particles,fade,numbers }) {
     for (let i = 0; i < numbers; i++) {
         particles.push(new Particle(
@@ -361,106 +358,104 @@ class Projectile {
 
 
 
-
-    let key = {
-        left: {
-            pressed: false
-        },
-        right: {
-            pressed: false
-        },
-        space: {
-            pressed: false
-        }
-    
+let key = {
+    left: {
+        pressed: false
+    },
+    right: {
+        pressed: false
+    },
+    space: {
+        pressed: false
     }
-    let guncount=0
-    addEventListener('keydown', ({ keyCode }) => {
-        // console.log(keyCode)
-        switch (keyCode) {
-            case 37:
-            case 65:
-                key.left.pressed = true
-                player.rotation = -0.15
-                break
-            case 32:
-              if(player.powerup==="machinegun"||player.powerup==="shotgun")
-               guncount+=1
-               key.space.pressed=true
-                break
-            case 39:
-            case 68:
-                key.right.pressed = true
-                player.rotation = 0.15
-                break
-        }
-    })
-    addEventListener('keyup', ({ keyCode }) => {
-        
-        switch (keyCode) {
-            case 37:
-            case 65:
-                key.left.pressed = false
-                player.rotation = 0
-                break
-            case 32:
-                let v=audio.shoot.play()
-                // console.log(v)
-                projectiles.push(new Projectile(
-                    {
-                        position: {
-                            x: player.position.x + player.width / 2,
-                            y: player.position.y
-                        },
-                        velocity: {
-                            x: 0,
-                            y: -10
-                        }
-                    }
-                ))
-                key.space.pressed = false
+
+}
+let guncount=0
+addEventListener('keydown', ({ keyCode }) => {
+    // console.log(keyCode)
+    switch (keyCode) {
+        case 37:
+        case 65:
+            key.left.pressed = true
+            player.rotation = -0.15
+            break
+        case 32:
+          if(player.powerup==="machinegun"||player.powerup==="shotgun")
+           guncount+=1
+           key.space.pressed=true
+            break
+        case 39:
+        case 68:
+            key.right.pressed = true
+            player.rotation = 0.15
+            break
+    }
+})
+addEventListener('keyup', ({ keyCode }) => {
     
-                break
-            case 39:
-            case 68:
-                key.right.pressed = false
-                player.rotation = 0
-                break
-        }
-    })
-    //create bg stars
-    
-        
-        let frames = 0
-        let player = new Player()
-        let animationId
-        let i = -1
-        let level = 1
-        let t = false
-        var gameovercount = 1
-        let rewards=[]
-        let projectiles = []
-        let enemyprojectiles = []
-        let particles = []
-        let grids = [new Grid()]
-        let count=0
-        for (let i = 0; i < 100; i++) {
-            particles.push(new Particle(
+    switch (keyCode) {
+        case 37:
+        case 65:
+            key.left.pressed = false
+            player.rotation = 0
+            break
+        case 32:
+            let v=audio.shoot.play()
+            // console.log(v)
+            projectiles.push(new Projectile(
                 {
                     position: {
-                        x: Math.random()*canvas.width,
-                        y: Math.random()*canvas.height,
+                        x: player.position.x + player.width / 2,
+                        y: player.position.y
                     },
                     velocity: {
                         x: 0,
-                        y:1
-                    },
-                    color: '#ffffff',
-                    radius: Math.random() *2,
-                    fade:false
+                        y: -10
+                    }
                 }
-            ))}
+            ))
+            key.space.pressed = false
 
+            break
+        case 39:
+        case 68:
+            key.right.pressed = false
+            player.rotation = 0
+            break
+    }
+})
+//create bg stars
+
+    
+    let frames = 0
+    let player = new Player()
+    let animationId
+    let i = -1
+    let level = 1
+    let t = false
+    var gameovercount = 1
+    let rewards=[]
+    let projectiles = []
+    let enemyprojectiles = []
+    let particles = []
+    let grids = [new Grid()]
+    let count=0
+    for (let i = 0; i < 100; i++) {
+        particles.push(new Particle(
+            {
+                position: {
+                    x: Math.random()*canvas.width,
+                    y: Math.random()*canvas.height,
+                },
+                velocity: {
+                    x: 0,
+                    y:1
+                },
+                color: '#ffffff',
+                radius: Math.random() *2,
+                fade:false
+            }
+        ))}
 function animate() {
 
     animationId = requestAnimationFrame(animate)
@@ -559,6 +554,7 @@ function animate() {
             enemy.update(grid.velocity)
             if (enemy.position.y + enemy.height >= player.position.y) {
                 setTimeout(() => { }, 0)
+
                 t = true
             }
 
@@ -616,7 +612,7 @@ function animate() {
 
     //checking the game condition if true then gameover
     if (t) {
-        if(player.poweruplive>0||player.lives>0){
+        if(player.poweruplive>0||player.lives>=0){
             if(player.poweruplive>0){
             player.poweruplive=0
             player.powerup="normal"
@@ -647,16 +643,11 @@ function animate() {
          if(gameovercount==1)
          audio.gameOver.play()
         localStorage.setItem('HighScore',score);
-
         if (gameovercount === 100) {
             cancelAnimationFrame(animationId)
-            
+            // console.log("yes")
             
             audio.backgroundMusic.stop()
-            let high=localStorage.getItem('HighScore')
-            highscore.innerHTML=high
-            restartscreen.style.display="flex"
-            
 
         }
         // console.log('game over')
@@ -777,17 +768,11 @@ function animate() {
 
     frames++
 }
-// restartbutton.addEventListener('click',()=>{
-//     audio.backgroundMusic.play()
-//     audio.start.play()
-//     restartscreen.style.display="none"
-//     animate() 
-// })
+
 startbtn.addEventListener('click',()=>{
     audio.backgroundMusic.play()
     audio.start.play()
     startscreen.style.display="none"
-    
     animate() 
 })
 
