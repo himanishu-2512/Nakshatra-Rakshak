@@ -63,3 +63,6 @@ align-items: center;
 #startbutton:active{
     color:red;
 }
+.end-screen{
+display: none;
+}
