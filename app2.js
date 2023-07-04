@@ -352,7 +352,7 @@ function animate() {
             let highscore=localStorage.getItem('HighScore')
             if(!highscore){
             localStorage.setItem('HighScore',score);
-            highscr.innerHTML=score
+            highscore=localStorage.getItem('HighScore')
         }
             else{
                if(highscore<score){
