@@ -350,8 +350,10 @@ function animate() {
         if (gameovercount === 100) {
             
             let highscore=localStorage.getItem('HighScore')
-            if(!highscore)
+            if(!highscore){
             localStorage.setItem('HighScore',score);
+            highscr.innerHTML=score
+        }
             else{
                if(highscore<score){
                 localStorage.setItem('HighScore',score);
