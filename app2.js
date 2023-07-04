@@ -6,7 +6,9 @@ canvas.height = window.innerHeight
 let scoreId=document.getElementById('scoreId')
 let startbtn=document.getElementById("startbutton")
 let startscreen=document.querySelector(".start-screen")
-let score=0
+let restartbtn=document.getElementById("endbutton")
+let restartscreen=document.querySelector(".end-screen")
+let highscr=document.getElementById("highscore")
 let lifeline=document.querySelector('.lives')
 function createPartilces({ object, color, particles,fade,numbers }) {
     for (let i = 0; i < numbers; i++) {
@@ -27,445 +29,138 @@ function createPartilces({ object, color, particles,fade,numbers }) {
         ))
     }
 }
+let frames = 0
+let player = new Player()
+let animationId
+let i = -1
+let level = 1
+let t = false
+var gameovercount = 1
+let rewards=[]
+let projectiles = []
+let enemyprojectiles = []
+let particles = []
+let grids = [new Grid()]
+let count=0
+let score=0
+function init(){
+         score=0
+        frames = 0
+        player = new Player()
+        player.lives=3
+        player.opacity=1
+        animationId
+        i = -1
+        level = 1
+         t = false
+         gameovercount = 1
+         rewards=[]
+         projectiles = []
+         enemyprojectiles = []
+         particles = []
+         grids = [new Grid()]
+         count=0
+         let lives=[]
+         scoreId.innerHTML=score
+         for(let i=0;i<player.lives;i++){
+            lives.push('<ion-icon name="heart"></ion-icon>')
 
-class Game {
-    constructor(gameType, playercount) {
-        this.type = gameType
-        this.mode = playercount
-
-    }
-}
-
-class Player {
-    constructor() {
-        this.poweruplive=0
-        this.lives=3
-        this.livepower="normal"
-        this.powerup="normal"
-        this.opacity = 1
-        this.rotation = 0
-        this.position = {
-            x: canvas.width / 2,
-            y: canvas.height
-        };
-        this.velocity = {
-            x: 0,
-            y: 0
         }
-        let image = new Image();
-        image.src = './photos/rocket.png'
-        image.onload = () => {
-            this.image = image
-            this.height = image.height * .35
-            this.width = image.width * .35
-            this.position.x = canvas.width / 2 - this.width / 2
-            this.position.y = canvas.height - this.height
-        }
-
-    }
-    draw() {
-        c.save()
-        c.globalAlpha = this.opacity
-        c.translate(
-            player.position.x + player.width / 2,
-            player.position.y + player.height / 2
-        )
-        c.rotate(this.rotation)
-
-        c.translate(
-            -player.position.x - player.width / 2,
-            -player.position.y - player.height / 2
-        )
-
-        c.drawImage(
-            this.image,
-            this.position.x,
-            this.position.y,
-            this.width,
-            this.height
-        )
-        c.restore()
-    }
-
-
-    update() {
-        if (this.image) {
-            c.save()
-            if(this.livepower=="shield"){
-          
-
-            c.fillStyle='rgba(248, 25, 25, 0.534)'
+        const l=lives.join(',')
+        lifeline.innerHTML=lives
+        for (let i = 0; i < 100; i++) {
         
-            c.arc(this.position.x+this.width/2,this.position.y+this.height/2,this.height/2,0,Math.PI*2)
-            c.fill()
-        }
-        
-        
-            this.position.x += this.velocity.x;
-            this.position.y += this.velocity.y
-            this.draw()
-            c.restore()
-        }
-
-    }
-
-}
-class EnemyProjectile {
-    constructor({ position, velocity, i }) {
-        this.position = position
-        this.velocity = velocity
-    audio.enemyShoot.play()
-        this.radius = 2
-
-        let image = new Image()
-        if (i == 0)
-            image.src = "./photos/axe.png"
-        if (i == 1)
-            image.src = "./photos/swords2.png"
-
-        image.onload = () => {
-            this.image = image
-            this.height = image.height * .35
-            this.width = image.width * .35
-        }
-    }
-
-    draw() {
-        c.drawImage(
-            this.image,
-            this.position.x,
-            this.position.y,
-            this.width,
-            this.height
-        )
-
-    }
-
-    update() {
-        if (this.image) {
-            this.position.x += this.velocity.x
-            this.position.y += this.velocity.y
-            this.draw()
-        }
-    }
-
-}
-class Reward{
-constructor({position,val}){
-    this.position=position
-    this.velocity={
-        x:0,
-        y:5,
-    }
-    let image=new Image()
-    this.val=val
-    
-    if(val==7){
-        image.src='./photos/gun1.png'
-    }
-    else if(val==8){
-        image.src='./photos/gun2.png'
-    }
-    else if(val==5){
-        image.src="./photos/shield.png"
-    }
-    image.onload=()=>{
-        this.image=image
-        if(this.val==5){
-        this.height = image.height *.45
-        this.width = image.width *.45}
-        else if(this.val==7){
-            this.height=image.height*.20
-            this.width=image.width*.20
-        }
-        else{
-            this.height=image.height*.10
-            this.width=image.width*.10
-        }
-        // console.log(this.width,this.height)
-    }
-}
-
-draw(){
-if(this.image){
-    c.drawImage(
-        this.image,
-        this.position.x,
-        this.position.y,
-        this.width,
-        this.height
-    )
-}
-
-}
-update(){
-    this.position.x+=this.velocity.x
-    this.position.y+=this.velocity.y
-    this.draw()
-}
-}
-class Enemy {
-    constructor({ position, i }) {
-        this.position = {
-            x: position.x,
-            y: position.y
-        };
-        this.velocity = {
-            x: 0,
-            y: 0
-        }
-        this.i = i
-        this.count = Math.floor(Math.random())*10;
-        let image = new Image();
-        if (i == 0)
-            image.src = './photos/villain1.png'
-        else
-            image.src = './photos/villain2.png'
-        image.onload = () => {
-            this.image = image
-            this.height = image.height * .20
-            this.width = image.width * .20
-
-            // console.log(this.width, this.height)
-        }
-
-    }
-    draw() {
-        c.drawImage(
-            this.image,
-            this.position.x,
-            this.position.y,
-            this.width,
-            this.height
-        )
-    }
-
-    update(velocity) {
-        if (this.image) {
-            this.position.x += velocity.x
-            this.position.y += velocity.y
-            this.draw()
-        }
-    }
-
-    shoot(enemyprojectiles) {
-        enemyprojectiles.push(new EnemyProjectile({ position: { x: this.position.x + this.width / 2, y: this.position.y + this.width }, velocity: { x: 0, y: 3 }, i: this.i }))
-
-    }
-
-
-}
-class Grid {
-    constructor() {
-        this.position = {
-            x: 0,
-            y: 0
-        }
-
-        this.velocity = {
-            x: 3,
-            y: 0
-        }
-
-        this.enemies = []
-
-        const columns = Math.floor(Math.random() * 8 + 4)
-        const rows = Math.floor(Math.random() * 3 + 3)
-        this.count = 0
-        this.width = columns * 75
-        this.total = columns * rows;
-        for (let x = 0; x < columns; x++) {
-            for (let y = 0; y < rows; y++) {
-                this.enemies.push(
-                    new Enemy({
-                        position: {
-                            x: x * 75,
-                            y: y * 55
-                        },
-                        i: y % 2
-                    })
-                )
-            }
-        }
-
-    }
-
-    update() {
-        this.position.x += this.velocity.x
-        this.position.y += this.velocity.y
-        this.velocity.y = 0
-        if (this.position.x + this.width >= canvas.width || this.position.x <= 0) {
-            this.velocity.x = -this.velocity.x
-            this.velocity.y = 30
-        }
-    }
-}
-class Particle {
-    constructor({ position, velocity, color, radius,fade }) {
-        this.position = position
-        this.velocity = velocity
-        this.opacity = 1
-        this.radius = radius
-        this.color = color
-        this.fade=fade
-    }
-
-    draw() {
-        c.save()
-        c.globalAlpha = this.opacity
-        c.beginPath()
-        c.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2)
-        c.fillStyle = this.color
-        c.fill()
-        c.restore()
-
-    }
-
-    update() {
-        if (this.opacity > 0&&this.fade)
-            this.opacity = this.opacity - 0.01
-        this.position.x += this.velocity.x
-        this.position.y += this.velocity.y
-        this.draw()
-    }
-
-}
-class Projectile {
-    constructor({ position, velocity, color = 'red' }) {
-        this.position = position
-        this.velocity = velocity
-
-        this.radius = 2
-        this.color = color
-    }
-
-    draw() {
-        c.beginPath()
-        c.arc(this.position.x, this.position.y, 4, 0, Math.PI * 2)
-        c.fillStyle = this.color
-        c.fill()
-
-    }
-
-    update() {
-
-        this.position.x += this.velocity.x
-        this.position.y += this.velocity.y
-        this.draw()
-    }
-
-}
-
-
-
-let key = {
-    left: {
-        pressed: false
-    },
-    right: {
-        pressed: false
-    },
-    space: {
-        pressed: false
-    }
-
-}
-let guncount=0
-addEventListener('keydown', ({ keyCode }) => {
-    // console.log(keyCode)
-    switch (keyCode) {
-        case 37:
-        case 65:
-            key.left.pressed = true
-            player.rotation = -0.15
-            break
-        case 32:
-          if(player.powerup==="machinegun"||player.powerup==="shotgun")
-           guncount+=1
-           key.space.pressed=true
-            break
-        case 39:
-        case 68:
-            key.right.pressed = true
-            player.rotation = 0.15
-            break
-    }
-})
-addEventListener('keyup', ({ keyCode }) => {
-    
-    switch (keyCode) {
-        case 37:
-        case 65:
-            key.left.pressed = false
-            player.rotation = 0
-            break
-        case 32:
-            let v=audio.shoot.play()
-            // console.log(v)
-            projectiles.push(new Projectile(
+            particles.push(new Particle(
                 {
                     position: {
-                        x: player.position.x + player.width / 2,
-                        y: player.position.y
+                        x: Math.random()*canvas.width,
+                        y: Math.random()*canvas.height,
                     },
                     velocity: {
                         x: 0,
-                        y: -10
-                    }
+                        y:1
+                    },
+                    color: '#ffffff',
+                    radius: Math.random() *2,
+                    fade:false
                 }
-            ))
-            key.space.pressed = false
-
-            break
-        case 39:
-        case 68:
-            key.right.pressed = false
-            player.rotation = 0
-            break
-    }
-})
-//create bg stars
-
+            ))}
+}
+    let key = {
+        left: {
+            pressed: false
+        },
+        right: {
+            pressed: false
+        },
+        space: {
+            pressed: false
+        }
     
-    let frames = 0
-    let player = new Player()
-    let animationId
-    let i = -1
-    let level = 1
-    let t = false
-    var gameovercount = 1
-    let rewards=[]
-    let projectiles = []
-    let enemyprojectiles = []
-    let particles = []
-    let grids = [new Grid()]
-    let count=0
-    for (let i = 0; i < 100; i++) {
-        particles.push(new Particle(
-            {
-                position: {
-                    x: Math.random()*canvas.width,
-                    y: Math.random()*canvas.height,
-                },
-                velocity: {
-                    x: 0,
-                    y:1
-                },
-                color: '#ffffff',
-                radius: Math.random() *2,
-                fade:false
-            }
-        ))}
+    }
+    let guncount=0
+    addEventListener('keydown', ({ keyCode }) => {
+
+        switch (keyCode) {
+            case 37:
+            case 65:
+                key.left.pressed = true
+                player.rotation = -0.15
+                break
+            case 32:
+              if(player.powerup==="machinegun"||player.powerup==="shotgun")
+               guncount+=1
+               key.space.pressed=true
+                break
+            case 39:
+            case 68:
+                key.right.pressed = true
+                player.rotation = 0.15
+                break
+        }
+    })
+    addEventListener('keyup', ({ keyCode }) => {
+        
+        switch (keyCode) {
+            case 37:
+            case 65:
+                key.left.pressed = false
+                player.rotation = 0
+                break
+            case 32:
+                let v=audio.shoot.play()
+                projectiles.push(new Projectile(
+                    {
+                        position: {
+                            x: player.position.x + player.width / 2,
+                            y: player.position.y
+                        },
+                        velocity: {
+                            x: 0,
+                            y: -10
+                        }
+                    }
+                ))
+                key.space.pressed = false
+    
+                break
+            case 39:
+            case 68:
+                key.right.pressed = false
+                player.rotation = 0
+                break
+        }
+    })
+    //create bg stars
+        
+            console.log(particles)
+
 function animate() {
 
     animationId = requestAnimationFrame(animate)
-
     c.clearRect(0, 0, canvas.width, canvas.height)
     c.fillStyle = 'rgba(0,0,0)'
-
     c.fillRect(0, 0, canvas.width, canvas.height)
-
-
     player.update()
     rewards.forEach((projectile,index)=>{
         projectile.update()
@@ -475,10 +170,18 @@ function animate() {
         if(projectile.position.y + projectile.height >= player.position.y && projectile.position.x + projectile.width / 2 >= player.position.x + player.width / 4 && projectile.position.x + projectile.width / 2 <= player.position.x + player.width * 3 / 4){
             setTimeout(()=>{
                 audio.bonus.play()
-            if(projectile.val==7)player.powerup="machinegun"
-            else if(projectile.val==8)player.powerup="shotgun"
-            else if(projectile.val==5){player.livepower="shield"
-            player.poweruplive=1}
+            if(projectile.val==7){
+                player.powerup="machinegun";
+                guncount=0;
+            }
+            else if(projectile.val==8){
+                player.powerup="shotgun";
+                guncount=0;
+            }
+            else if(projectile.val==5){
+            player.livepower="shield"
+            player.poweruplive=1
+        }
             rewards.splice(index,1)
             },0)
             
@@ -546,7 +249,7 @@ function animate() {
     grids.forEach((grid, gridIndex) => {
         grid.update()
         if (level !== 1 && frames % Math.floor(240 / level) == 0 && grid.enemies.length > 0) {
-            // console.log((Math.floor(240 / level)))
+            
             grid.enemies[Math.floor(Math.random() * grid.enemies.length)].shoot(enemyprojectiles)
         }
         grid.enemies.forEach((enemy, i) => {
@@ -612,7 +315,7 @@ function animate() {
 
     //checking the game condition if true then gameover
     if (t) {
-        if(player.poweruplive>0||player.lives>=0){
+        if(player.poweruplive>0||player.lives>1){
             if(player.poweruplive>0){
             player.poweruplive=0
             player.powerup="normal"
@@ -620,7 +323,7 @@ function animate() {
         }
         else{
             player.lives-=1
-           let lives=[]
+            lives=[]
             for(let i=0;i<player.lives;i++){
                 lives.push('<ion-icon name="heart"></ion-icon>')
 
@@ -640,17 +343,33 @@ function animate() {
 
         }
        else{
+        lifeline.innerHTML=""
          if(gameovercount==1)
          audio.gameOver.play()
-        localStorage.setItem('HighScore',score);
+        
         if (gameovercount === 100) {
-            cancelAnimationFrame(animationId)
-            // console.log("yes")
             
+            let highscore=localStorage.getItem('HighScore')
+            if(!highscore)
+            localStorage.setItem('HighScore',score);
+            else{
+               if(highscore<score){
+                localStorage.setItem('HighScore',score);
+                highscore=localStorage.getItem('HighScore')
+               }
+               
+            }
+            highscr.innerHTML=highscore
+            cancelAnimationFrame(animationId)
+            
+            restartscreen.style.display="flex"
             audio.backgroundMusic.stop()
+            
+            
+        
 
         }
-        // console.log('game over')
+    
         gameovercount++}
     }
     else{
@@ -768,11 +487,19 @@ function animate() {
 
     frames++
 }
-
+restartbtn.addEventListener("click",()=>{
+    audio.backgroundMusic.play()
+    audio.start.play()
+    restartscreen.style.display="none"
+    init()
+    animate()
+  
+})
 startbtn.addEventListener('click',()=>{
     audio.backgroundMusic.play()
     audio.start.play()
     startscreen.style.display="none"
+    init()
     animate() 
 })
 

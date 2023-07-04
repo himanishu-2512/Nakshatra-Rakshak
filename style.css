@@ -29,7 +29,7 @@ canvas{
     color:red;
     font-size:x-large;
 }
-.start-screen{
+.start-screen,.end-screen{
    width:100vw;
    height: 100vh; 
     position:fixed;
@@ -38,7 +38,7 @@ display: flex;
 justify-content: center;
 align-items: center;
 }
-.startscreen{
+.startscreen,.endscreen{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -48,7 +48,20 @@ align-items: center;
     border: solid 2px rgb(50, 95, 135);
 
 }
-#startbutton{
+.endscreen{
+    color:white;
+    flex-direction: column;
+
+}
+.highscore{
+margin-bottom: 10px;
+font-size: 30;
+font-weight: 500;
+}
+#highscore{
+    margin-left: 5px;
+}
+#startbutton,#endbutton{
 
     width:120px;
     height:auto;
@@ -60,9 +73,10 @@ align-items: center;
     color: white;
 
 }
-#startbutton:active{
+#startbutton:active,#endbutton:active{
     color:red;
 }
 .end-screen{
+    top:0;
 display: none;
 }

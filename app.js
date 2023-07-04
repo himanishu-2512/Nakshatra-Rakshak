@@ -1,5 +1,3 @@
-// const { Socket } = require("socket.io")
-
 const canvas = document.querySelector('canvas')
 const input = document.querySelector('#input')
 const submit = document.querySelector('#submit')
