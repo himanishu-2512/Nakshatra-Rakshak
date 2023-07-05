@@ -48,7 +48,7 @@ The enemies in Indian Space Invaders are inspired by the demons depicted in anci
 To play Indian Space Invaders on your local machine, follow these steps:
 
 1. Clone the repository:
-
+ `git clone https://github.com/himanishu-2512/Shooting-Game.git`
 
 2. Open the `index.html` file in your web browser.
 
