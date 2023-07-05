@@ -11,7 +11,7 @@ Welcome to Indian Space Invaders, a web-based game application that combines the
 - [Controls](#controls)
 - [Installation](#installation)
 - [Contributing](#contributing)
-- [License](#license)
+
 
 ## Introduction
 
