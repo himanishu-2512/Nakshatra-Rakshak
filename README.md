@@ -1,6 +1,8 @@
 # Indian Space Invaders
 
 Welcome to Indian Space Invaders, a web-based game application that combines the classic gameplay of Space Invaders with ancient demons from Hindu scriptures, giving it a unique Indian touch. In this game, players will battle against demon-like enemies, dodging their axes and swords while utilizing various bonuses to defend themselves.
+![image](https://github.com/himanishu-2512/Shooting-Game/assets/96021680/e91ff8da-6058-473c-a2d7-8db3dc762e9f)
+
 
 ## Table of Contents
 
