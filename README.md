@@ -19,7 +19,7 @@ Welcome to Indian Space Invaders, a web-based game application that combines the
 
 ## Introduction
 
-Indian Space Invaders is a nostalgic throwback to the popular arcade game Space Invaders, but with a cultural twist inspired by ancient Hindu scriptures. The game features visually appealing graphics and engaging gameplay, challenging players to survive waves of demon enemies and collect powerful bonuses.
+Nakshatra Rakshak is a nostalgic throwback to the popular arcade game Space Invaders, but with a cultural twist inspired by ancient Hindu scriptures. The game features visually appealing graphics and engaging gameplay, challenging players to survive waves of demon enemies and collect powerful bonuses.
 
 ## Gameplay
 
