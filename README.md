@@ -1,4 +1,4 @@
-# Indian Space Invaders
+# Nakshatra Rakshak
 
 Welcome to Indian Space Invaders, a web-based game application that combines the classic gameplay of Space Invaders with ancient demons from Hindu scriptures, giving it a unique Indian touch. In this game, players will battle against demon-like enemies, dodging their axes and swords while utilizing various bonuses to defend themselves.
 
